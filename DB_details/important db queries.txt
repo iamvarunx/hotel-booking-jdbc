@@ -1,0 +1,25 @@
+CREATE TABLE `user_details` (
+    `user_id` int NOT NULL AUTO_INCREMENT, `name` varchar(225) NOT NULL, `email` varchar(225) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL, `password` varchar(223) NOT NULL, `role` varchar(225) NOT NULL, `phone_no` varchar(255) NOT NULL, PRIMARY KEY (`user_id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 6 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci
+
+
+CREATE TABLE `room_types` (
+    `Room_id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary Key', `Room_type` varchar(255) DEFAULT NULL, `no_of_person` int DEFAULT NULL, `pricePerDay` int NOT NULL, `advanceAmount` int NOT NULL, PRIMARY KEY (`Room_id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 7 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci
+
+CREATE TABLE `payment_table` (
+    `payment_id` int NOT NULL AUTO_INCREMENT, `user_id` int DEFAULT NULL, `payment_mode` varchar(225) DEFAULT NULL, `payment_date` varchar(225) DEFAULT NULL, `Amount` int NOT NULL, PRIMARY KEY (`payment_id`), KEY `user_id` (`user_id`), CONSTRAINT `payment_table_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_details` (`user_id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 4 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci
+
+CREATE TABLE `hotel_rooms` (
+    `Room_id` int DEFAULT NULL, `Hotel_id` int DEFAULT NULL, `no_of_rooms` int DEFAULT NULL, KEY `Room_id` (`Room_id`), KEY `Hotel_id` (`Hotel_id`), CONSTRAINT `hotel_rooms_ibfk_1` FOREIGN KEY (`Room_id`) REFERENCES `room_types` (`Room_id`), CONSTRAINT `hotel_rooms_ibfk_2` FOREIGN KEY (`Hotel_id`) REFERENCES `hotel_details` (`Hotel_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci
+
+CREATE TABLE `hotel_details` (
+    `Hotel_id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary Key', `Hotel_address` varchar(500) DEFAULT NULL, `Hotel_city` varchar(225) DEFAULT NULL, `Hotel_contact` varchar(20) DEFAULT NULL, PRIMARY KEY (`Hotel_id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 15 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci
+
+
+CREATE TABLE `booking_table` (
+    `booking_id` int NOT NULL AUTO_INCREMENT, `Hotel_id` int DEFAULT NULL, `Room_id` int DEFAULT NULL, `no_of_rooms` int DEFAULT NULL, `check_in` date DEFAULT NULL, `check_out` date DEFAULT NULL, `payment_id` int NOT NULL, PRIMARY KEY (`booking_id`), KEY `Hotel_id` (`Hotel_id`), KEY `Room_id` (`Room_id`), KEY `payment_id` (`payment_id`), CONSTRAINT `booking_table_ibfk_1` FOREIGN KEY (`Hotel_id`) REFERENCES `hotel_details` (`Hotel_id`), CONSTRAINT `booking_table_ibfk_2` FOREIGN KEY (`Room_id`) REFERENCES `hotel_rooms` (`Room_id`), CONSTRAINT `booking_table_ibfk_3` FOREIGN KEY (`payment_id`) REFERENCES `payment_table` (`payment_id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 4 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci
